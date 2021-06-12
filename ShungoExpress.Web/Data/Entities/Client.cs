@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ShungoExpress.Web.Data.Entities
 {
-  public class Client
+  public class Client : User
   {
-    public int Id { get; set; }
+    [Display(Name = "Link address")]
+    public string AddressUrl { get; set; }
 
   }
 }

@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using ShungoExpress.Web.Data;
 
 namespace ShungoExpress.Web
 {
@@ -7,14 +9,21 @@ namespace ShungoExpress.Web
   {
     public static void Main(string[] args)
     {
-      CreateHostBuilder(args).Build().Run();
+      var host = CreateWebHostBuilder(args).Build();
+      RunSeedDb(host);
+      host.Run();
     }
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-              webBuilder.UseStartup<Startup>();
-            });
+    private static void RunSeedDb(IWebHost host)
+    {
+      var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+      using var scope = scopeFactory.CreateScope();
+      var seeder = scope.ServiceProvider.GetService<SeedDb>();
+      seeder.SeedAsync().Wait();
+    }
+
+
+    public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+      WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
   }
 }

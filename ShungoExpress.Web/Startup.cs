@@ -6,6 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShungoExpress.Web.Data;
 using Microsoft.EntityFrameworkCore;
+using ShungoExpress.Web.Data.Entities;
+using ShungoExpress.Web.Data.Repositories;
+using Microsoft.AspNetCore.Identity;
+using ShungoExpress.Web.Helper;
 
 namespace ShungoExpress.Web
 {
@@ -21,19 +25,31 @@ namespace ShungoExpress.Web
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddControllersWithViews();
+      services.AddIdentity<User, IdentityRole>(cfg =>
+        {
+          //cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+          //cfg.SignIn.RequireConfirmedEmail = true;
+          cfg.User.RequireUniqueEmail = true;
+          cfg.Password.RequireDigit = true;
+          cfg.Password.RequiredUniqueChars = 0;
+          cfg.Password.RequireLowercase = true;
+          cfg.Password.RequireNonAlphanumeric = false;
+          cfg.Password.RequireUppercase = true;
+          cfg.Password.RequiredLength = 6;
+        })
+        //.AddDefaultTokenProviders()
+        .AddEntityFrameworkStores<DataContext>();
+
       services.AddDbContext<DataContext>(options =>
       {
         options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
       });
+      
+      services.AddTransient<SeedDb>();
+      services.AddScoped<IGenericRepository<Motorized>, GenericRepository<Motorized>>();
+      services.AddScoped<IUserHelper, UserHelper>();
 
-      //services.Configure<CookiePolicyOptions>(options =>
-      //{
-      //  options.CheckConsentNeeded = context => true;
-      //  options.MinimumSameSitePolicy = SameSiteMode.None;
-      //});
-
-
-      services.AddControllersWithViews();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,14 +62,12 @@ namespace ShungoExpress.Web
       else
       {
         app.UseExceptionHandler("/Home/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
       }
       app.UseHttpsRedirection();
       app.UseStaticFiles();
-
       app.UseRouting();
-
+      app.UseAuthentication();
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>
