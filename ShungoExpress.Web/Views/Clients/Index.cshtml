@@ -53,7 +53,17 @@
                   @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => item.AddressUrl)
+                  @{
+                    var link = @item.AddressUrl;
+                    if (link != null)
+                    {
+                      if (!link.StartsWith("https://"))
+                      { 
+                        link = "https://"+link;
+                      }
+                    }
+                  }
+                  <a href="@link" target="_blank">@item.AddressUrl</a>
                 </td>
                 <td>
                   <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Delete</button>

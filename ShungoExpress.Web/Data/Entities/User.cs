@@ -17,6 +17,7 @@ namespace ShungoExpress.Web.Data.Entities
     [MaxLength(100, ErrorMessage = "The field {0} accept only {1} characters")]
     public string Address { get; set; }
 
+    [DataType(DataType.Url)]
     [Display(Name = "Link address")]
     public string AddressUrl { get; set; }
 

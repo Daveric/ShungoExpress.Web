@@ -46,7 +46,7 @@ namespace ShungoExpress.Web.Data
         LastName = lastName,
         UserName = name,
         Address = "Machala",
-        AddressUrl = "https://www.google.com/maps/@-3.2702186,-79.9463104,17z",
+        AddressUrl = "https://www.google.com.ec/maps/@-3.2714941,-79.947626,16z",
         Role = role,
         PhoneNumber = "000000000"
       };
