@@ -1,9 +1,11 @@
 ﻿
+
 namespace ShungoExpress.Web.Helper
 {
   using System.Collections.Generic;
   using System.Linq;
   using System.Threading.Tasks;
+  using Models;
   using Data.Entities;
   using Microsoft.AspNetCore.Identity;
   using Microsoft.EntityFrameworkCore;
@@ -26,9 +28,19 @@ namespace ShungoExpress.Web.Helper
       return await _userManager.CreateAsync(user, password);
     }
 
+    public async Task<IdentityResult> AddUserAsync(User user)
+    {
+      return await _userManager.CreateAsync(user);
+    }
+
     public async Task<User> GetUserByEmailAsync(string email)
     {
       return await _userManager.FindByEmailAsync(email);
+    }
+
+    public async Task<User> GetUserByNameAsync(string userName)
+    {
+      return await _userManager.FindByNameAsync(userName);
     }
 
     public async Task AddUserToRoleAsync(User user, string roleName)
@@ -67,14 +79,14 @@ namespace ShungoExpress.Web.Helper
       return await _userManager.IsInRoleAsync(user, roleName);
     }
 
-    //public async Task<SignInResult> LoginAsync(LoginViewModel model)
-    //{
-    //  return await _signInManager.PasswordSignInAsync(
-    //      model.Username,
-    //      model.Password,
-    //      model.RememberMe,
-    //      false);
-    //}
+    public async Task<SignInResult> LoginAsync(LoginViewModel model)
+    {
+      return await _signInManager.PasswordSignInAsync(
+          model.Username,
+          model.Password,
+          model.RememberMe,
+          false);
+    }
 
     public async Task LogoutAsync()
     {
@@ -124,6 +136,14 @@ namespace ShungoExpress.Web.Helper
       return await _userManager.Users
           .OrderBy(u => u.LastName)
           .ToListAsync();
+    }
+    
+    public async Task<List<User>> GetAllClientsAsync()
+    {
+      return await _userManager.Users
+        .OrderBy(u => u.LastName)
+        .Where(u => u.Role.Equals("Client"))
+        .ToListAsync();
     }
 
     public async Task RemoveUserFromRoleAsync(User user, string roleName)

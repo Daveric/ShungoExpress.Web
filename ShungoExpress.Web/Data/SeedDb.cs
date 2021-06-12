@@ -34,24 +34,41 @@ namespace ShungoExpress.Web.Data
         await _context.SaveChangesAsync();
       }
 
-      if (!_context.Clients.Any())
-      {
-        AddClient("Pancho", "Villa");
-        await _context.SaveChangesAsync();
-      }
+      await AddClient("Pancho", "Villa");
     }
 
-    private void AddClient(string name, string lastName)
+    private async Task AddClient(string name, string lastName)
     {
-      _context.Clients.Add(new Client()
+      const string role = "Client";
+      var client = new User()
       {
         FirstName = name,
         LastName = lastName,
-        Address = "Machala"
-      });
+        UserName = name,
+        Address = "Machala",
+        AddressUrl = "https://www.google.com/maps/@-3.2702186,-79.9463104,17z",
+        Role = role,
+        PhoneNumber = "000000000"
+      };
+      IdentityResult result = null;
+      var user = await _userHelper.GetUserByNameAsync(name);
+      if (user == null)
+      {
+        result = await _userHelper.AddUserAsync(client);
+      }
+      var isInRole = await _userHelper.IsUserInRoleAsync(client, role);
+      if (!isInRole)
+      {
+        await _userHelper.AddUserToRoleAsync(client, role);
+      }
+
+      if (result != null && result != IdentityResult.Success)
+      {
+        throw new InvalidOperationException("Could not create client in seeder");
+      }
     }
 
-    private async Task<User> CheckUser(string userName, string firstName, string lastName, string role)
+    private async Task CheckUser(string userName, string firstName, string lastName, string role)
     {
       // Add user
       var user = await _userHelper.GetUserByEmailAsync(userName) ?? await AddUser(userName, firstName, lastName, role);
@@ -61,8 +78,6 @@ namespace ShungoExpress.Web.Data
       {
         await _userHelper.AddUserToRoleAsync(user, role);
       }
-
-      return user;
     }
 
     private async Task<User> AddUser(string userName, string firstName, string lastName, string role)
@@ -73,7 +88,8 @@ namespace ShungoExpress.Web.Data
         LastName = lastName,
         Email = userName,
         UserName = userName,
-        Address = "Machala"
+        Address = "Machala",
+        PhoneNumber = "0992627258"
       };
 
       var result = await _userHelper.AddUserAsync(user, "Pwd1234");
@@ -92,6 +108,7 @@ namespace ShungoExpress.Web.Data
     {
       await _userHelper.CheckRoleAsync("Admin");
       await _userHelper.CheckRoleAsync("Manager");
+      await _userHelper.CheckRoleAsync("Client");
     }
 
     private void AddMotorized(string name)

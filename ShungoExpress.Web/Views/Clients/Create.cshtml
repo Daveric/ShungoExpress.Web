@@ -1,0 +1,57 @@
+﻿@model ShungoExpress.Web.Data.Entities.User
+@{
+  ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Client</h4>
+<hr />
+<div class="row">
+  <div class="col-md-4">
+    <form asp-action="Create">
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+      <div class="form-group">
+        <label asp-for="FirstName">First Name</label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-warning"></span>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="LastName">Last Name</label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-warning"></span>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="Address">Address</label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-warning"></span>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="PhoneNumber">Phone Number</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-warning"></span>
+      </div>
+
+      <div class="form-group">
+        <label asp-for="AddressUrl">Address Url</label>
+        <input asp-for="AddressUrl" class="form-control" />
+        <span asp-validation-for="AddressUrl" class="text-warning"></span>
+      </div>
+
+      <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-success">Back</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="text-success">
+  <p>
+    @ViewBag.Message
+  </p>
+</div>

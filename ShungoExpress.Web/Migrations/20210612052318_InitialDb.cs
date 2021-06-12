@@ -3,55 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ShungoExpress.Web.Migrations
 {
-    public partial class CompleteDb : Migration
+    public partial class InitialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Name",
-                table: "Orders");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "Orders",
-                type: "nvarchar(160)",
-                maxLength: 160,
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "ClientId",
-                table: "Orders",
-                type: "nvarchar(450)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DeliveryDate",
-                table: "Orders",
-                type: "datetime2",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "OrderDate",
-                table: "Orders",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Motorizeds",
-                type: "nvarchar(50)",
-                maxLength: 50,
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -71,13 +26,13 @@ namespace ShungoExpress.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     AddressUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -94,6 +49,20 @@ namespace ShungoExpress.Web.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Motorizeds",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Available = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Motorizeds", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -202,10 +171,35 @@ namespace ShungoExpress.Web.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_ClientId",
-                table: "Orders",
-                column: "ClientId");
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
+                    Cost = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    MotorizedId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Orders_Motorizeds_MotorizedId",
+                        column: x => x.MotorizedId,
+                        principalTable: "Motorizeds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -246,21 +240,19 @@ namespace ShungoExpress.Web.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Orders_AspNetUsers_ClientId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_ClientId",
                 table: "Orders",
-                column: "ClientId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_MotorizedId",
+                table: "Orders",
+                column: "MotorizedId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Orders_AspNetUsers_ClientId",
-                table: "Orders");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -277,50 +269,16 @@ namespace ShungoExpress.Web.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Orders_ClientId",
-                table: "Orders");
-
-            migrationBuilder.DropColumn(
-                name: "ClientId",
-                table: "Orders");
-
-            migrationBuilder.DropColumn(
-                name: "DeliveryDate",
-                table: "Orders");
-
-            migrationBuilder.DropColumn(
-                name: "OrderDate",
-                table: "Orders");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "Orders",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(160)",
-                oldMaxLength: 160);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "Orders",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Motorizeds",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(50)",
-                oldMaxLength: 50);
+            migrationBuilder.DropTable(
+                name: "Motorizeds");
         }
     }
 }

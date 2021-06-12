@@ -10,8 +10,8 @@ using ShungoExpress.Web.Data;
 namespace ShungoExpress.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210612012221_CompleteDb")]
-    partial class CompleteDb
+    [Migration("20210612052318_InitialDb")]
+    partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -183,7 +183,7 @@ namespace ShungoExpress.Web.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("datetime2");
@@ -217,16 +217,14 @@ namespace ShungoExpress.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
+                    b.Property<string>("AddressUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -237,6 +235,7 @@ namespace ShungoExpress.Web.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -262,10 +261,14 @@ namespace ShungoExpress.Web.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -288,18 +291,6 @@ namespace ShungoExpress.Web.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
-                });
-
-            modelBuilder.Entity("ShungoExpress.Web.Data.Entities.Client", b =>
-                {
-                    b.HasBaseType("ShungoExpress.Web.Data.Entities.User");
-
-                    b.Property<string>("AddressUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("Client");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -355,7 +346,7 @@ namespace ShungoExpress.Web.Migrations
 
             modelBuilder.Entity("ShungoExpress.Web.Data.Entities.Order", b =>
                 {
-                    b.HasOne("ShungoExpress.Web.Data.Entities.Client", "Client")
+                    b.HasOne("ShungoExpress.Web.Data.Entities.User", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId");
 

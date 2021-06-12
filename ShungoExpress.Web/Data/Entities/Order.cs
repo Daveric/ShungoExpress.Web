@@ -17,7 +17,7 @@ namespace ShungoExpress.Web.Data.Entities
     public DateTime? DeliveryDate { get; set; }
     
     [Required]
-    public Client Client { get; set; }
+    public User Client { get; set; }
 
     [Required]
     [MaxLength(160, ErrorMessage = "The field {0} accept only {1} characters")]

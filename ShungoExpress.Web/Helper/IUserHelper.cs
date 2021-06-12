@@ -2,6 +2,7 @@
 using ShungoExpress.Web.Data.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ShungoExpress.Web.Models;
 
 namespace ShungoExpress.Web.Helper
 {
@@ -9,9 +10,13 @@ namespace ShungoExpress.Web.Helper
   {
     Task<User> GetUserByEmailAsync(string email);
 
+    Task<User> GetUserByNameAsync(string userName);
+
     Task<IdentityResult> AddUserAsync(User user, string password);
 
-    //Task<SignInResult> LoginAsync(LoginViewModel model);
+    Task<IdentityResult> AddUserAsync(User user);
+
+    Task<SignInResult> LoginAsync(LoginViewModel model);
 
     Task LogoutAsync();
 
@@ -40,6 +45,8 @@ namespace ShungoExpress.Web.Helper
     Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
 
     Task<List<User>> GetAllUsersAsync();
+
+    Task<List<User>> GetAllClientsAsync();
 
     Task RemoveUserFromRoleAsync(User user, string roleName);
 

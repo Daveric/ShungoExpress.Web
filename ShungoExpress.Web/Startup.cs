@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShungoExpress.Web.Data;
-using Microsoft.EntityFrameworkCore;
 using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Data.Repositories;
-using Microsoft.AspNetCore.Identity;
 using ShungoExpress.Web.Helper;
 
 namespace ShungoExpress.Web
@@ -29,8 +28,8 @@ namespace ShungoExpress.Web
       services.AddIdentity<User, IdentityRole>(cfg =>
         {
           //cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
-          //cfg.SignIn.RequireConfirmedEmail = true;
-          cfg.User.RequireUniqueEmail = true;
+          cfg.SignIn.RequireConfirmedEmail = false;
+          cfg.User.RequireUniqueEmail = false;
           cfg.Password.RequireDigit = true;
           cfg.Password.RequiredUniqueChars = 0;
           cfg.Password.RequireLowercase = true;
@@ -45,9 +44,10 @@ namespace ShungoExpress.Web
       {
         options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
       });
-      
+
       services.AddTransient<SeedDb>();
       services.AddScoped<IGenericRepository<Motorized>, GenericRepository<Motorized>>();
+      services.AddScoped<IGenericRepository<Order>, GenericRepository<Order>>();
       services.AddScoped<IUserHelper, UserHelper>();
 
     }
