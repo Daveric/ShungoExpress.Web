@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 namespace ShungoExpress.Web.Helper
 {
   using System.Collections.Generic;
@@ -154,6 +156,23 @@ namespace ShungoExpress.Web.Helper
     public async Task DeleteUserAsync(User user)
     {
       await _userManager.DeleteAsync(user);
+    }
+
+    public IEnumerable<SelectListItem> GetClients()
+    {
+      var list = _userManager.Users.Where(u=>u.Role.Equals("Client")).Select(c => new SelectListItem
+      {
+        Text = c.FirstName,
+        Value = c.Id.ToString()
+      }).OrderBy(l => l.Text).ToList();
+
+      list.Insert(0, new SelectListItem
+      {
+        Text = "(Select a client...)",
+        Value = "0"
+      });
+
+      return list;
     }
   }
 }

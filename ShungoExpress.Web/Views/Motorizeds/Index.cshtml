@@ -4,13 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Motorizeds</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table">
-    <thead>
+    <thead class="thead-light">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -28,11 +28,14 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Available)
+              @Html.DropDownListFor(modelItem => item.Available, new List<SelectListItem>()
+              {
+                new SelectListItem() { Text = "Yes", Value = "True" },
+                new SelectListItem() { Text = "No", Value = "False"}
+              }, "Select.....", new { @id = "flag", @class="form-control" })
+              @Html.ValidationMessageFor(modelItem => item.Available)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>

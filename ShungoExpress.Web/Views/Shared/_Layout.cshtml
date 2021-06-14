@@ -6,44 +6,68 @@
     <title>@ViewData["Title"] - ShungoExpress.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+      .navbar-custom {
+        background-color: rgb(25, 89, 159);
+      }
+          
+      .navbar-custom .navbar-brand,
+      .navbar-custom .navbar-text {
+        color: white;
+      }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ShungoExpress</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                  <ul class="navbar-nav flex-grow-1">
-                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    @{
-                      System.Diagnostics.Debug.Assert(User.Identity != null, "User.Identity != null");
-                    }
+      <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-custom border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+          <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+            <img src="~/images/logo2.png" class="img-center" height="50" width="50" alt="Shungo-Express" />
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                  aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="nav">
+              <li class="nav-item"><a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+              @{
+                System.Diagnostics.Debug.Assert(User.Identity != null, "User.Identity != null");
+              }
 
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                      <li><a class="nav-link text-dark" asp-area="" asp-controller="Motorizeds" asp-action="Index">Motorizeds</a></li>
-                      <li><a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a></li>
-                      <li><a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a></li>
-                    }
+              @if (User.Identity.IsAuthenticated)
+              {
+                <li class="nav-item"><a class="nav-link text-white" asp-area="" asp-controller="Motorizeds" asp-action="Index">Motorizeds</a></li>
+                <li class="nav-item"><a class="nav-link text-white" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a></li>
+                <li class="nav-item"><a class="nav-link text-white" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a></li>
+              }
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="btn-group nav">
+                @if (User.Identity.IsAuthenticated)
+                {
+                  <a class="nav-link text-white" aria-current="page">@this.User.Identity.Name</a>
+                  <button type="button" class="btn navbar-btn dropdown-toggle text-white" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+
+                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="ChangeUser">Edit Profile</a></li>
+                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
+
                   </ul>
-                  <ul class="nav navbar-nav navbar-right">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                      <li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a></li>
-                      <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
-                    }
-                    else
-                    {
-                      <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
-                    }
-                  </ul>
-                </div>
+                }
+                else
+                {
+                  <li class="nav-item"><a class="nav-link active" asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                }
+              </ul>
             </div>
-        </nav>
+          </div>
+      </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">

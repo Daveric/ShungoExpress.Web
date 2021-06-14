@@ -1,26 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Data.Repositories;
-using System.Collections.Generic;
-using System.Linq;
+using ShungoExpress.Web.Helper;
+using ShungoExpress.Web.Models;
 using System.Threading.Tasks;
 
 namespace ShungoExpress.Web.Controllers
 {
   public class OrdersController : Controller
   {
+    private readonly IMotorizedRepository _motorizedRepository;
     private readonly IGenericRepository<Order> _orderRepository;
+    private readonly IUserHelper _userHelper;
 
-    public OrdersController(IGenericRepository<Order> orderRepository)
+    public OrdersController(IMotorizedRepository motorizedRepository, IGenericRepository<Order> orderRepository, IUserHelper userHelper)
     {
+      _motorizedRepository = motorizedRepository;
       _orderRepository = orderRepository;
+      _userHelper = userHelper;
     }
 
     // GET: Orders
     public IActionResult Index()
     {
-      return View( _orderRepository.GetAll());
+      return View(_orderRepository.GetAll());
     }
 
     // GET: Orders/Details/5
@@ -43,20 +48,37 @@ namespace ShungoExpress.Web.Controllers
     // GET: Orders/Create
     public IActionResult Create()
     {
-      return View();
+      var model = new OrderViewModel()
+      {
+        OrderDate = DateTime.UtcNow,
+        Clients = _userHelper.GetClients(),
+        Motorizeds = _motorizedRepository.GetMotorizeds()
+      };
+      return View(model);
     }
 
     // POST: Orders/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Order order)
+    public async Task<IActionResult> Create(OrderViewModel model)
     {
       if (ModelState.IsValid)
       {
+        var motorized = await _motorizedRepository.FindAsync(model.MotorizedId);
+        var client = await _userHelper.GetUserByIdAsync(model.ClientName);
+        var order = new Order()
+        {
+          OrderDate = model.OrderDate,
+          DeliveryDate = model.DeliveryDate,
+          Description = model.Description,
+          Cost = model.Cost,
+          Client = client,
+          Motorized = motorized
+        };
         await _orderRepository.CreateAsync(order);
         return RedirectToAction(nameof(Index));
       }
-      return View(order);
+      return View(model);
     }
 
     // GET: Orders/Edit/5

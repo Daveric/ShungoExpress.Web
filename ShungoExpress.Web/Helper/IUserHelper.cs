@@ -2,6 +2,7 @@
 using ShungoExpress.Web.Data.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ShungoExpress.Web.Models;
 
 namespace ShungoExpress.Web.Helper
@@ -51,5 +52,7 @@ namespace ShungoExpress.Web.Helper
     Task RemoveUserFromRoleAsync(User user, string roleName);
 
     Task DeleteUserAsync(User user);
+
+    IEnumerable<SelectListItem> GetClients();
   }
 }
