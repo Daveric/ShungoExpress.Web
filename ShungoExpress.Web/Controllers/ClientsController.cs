@@ -15,6 +15,10 @@ namespace ShungoExpress.Web.Controllers
       _clientHelper = clientHelper;
     }
 
+    //borrar boton de delete para los usuarios
+    //TODO: agregar nickname 
+    //agregar campo de direccion en index
+
     public async Task<IActionResult> Index()
     {
       var clients = await _clientHelper.GetAllClientsAsync();
@@ -35,6 +39,7 @@ namespace ShungoExpress.Web.Controllers
       if (ModelState.IsValid)
       {
         client.Role = "Client";
+        client.UserName = client.FirstName;
         await _clientHelper.AddUserAsync(client);
         await _clientHelper.AddUserToRoleAsync(client, "Client");
         return RedirectToAction(nameof(Index));

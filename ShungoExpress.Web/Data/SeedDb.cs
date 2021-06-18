@@ -115,7 +115,7 @@ namespace ShungoExpress.Web.Data
     {
       _context.Motorizeds.Add(new Motorized()
       {
-        Name = name,
+        FirstName = name,
         Available = true
       });
     }

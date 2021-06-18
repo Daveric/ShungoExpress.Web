@@ -8,12 +8,14 @@ namespace ShungoExpress.Web.Controllers
 {
   public class MotorizedsController : Controller
   {
-    private readonly IGenericRepository<Motorized> _motorizedRepository;
+    private readonly IMotorizedRepository _motorizedRepository;
 
-    public MotorizedsController(IGenericRepository<Motorized> motorizedRepository)
+    public MotorizedsController(IMotorizedRepository motorizedRepository)
     {
       _motorizedRepository = motorizedRepository;
     }
+
+    //TODO: acoplar motorized entity con el controlador
 
     // GET: Motorizeds
     public IActionResult Index()

@@ -22,6 +22,17 @@ namespace ShungoExpress.Web.Controllers
       _userHelper = userHelper;
     }
 
+    //filtrar solo para administrador
+    //TODO: filtrar pedidos por motorizados y por cliente
+    //agregar boton the filtrado por dia,semana y mes
+    //agregar boton de confirmacion de llegada del pedido en pagina de detalles
+    //agregar campos de motorizado en index
+    //agregar campos de nombre de cliente y direccion en detalles
+    //agregar boton de contabilidad
+    //letras mas grandes
+    //agregar notas en pantalla home, para cargar siempre,
+    //agregar boton de resumen de ventas del dia anterior en home
+
     // GET: Orders
     public IActionResult Index()
     {

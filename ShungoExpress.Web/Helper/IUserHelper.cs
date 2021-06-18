@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ShungoExpress.Web.Data.Entities;
+using ShungoExpress.Web.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using ShungoExpress.Web.Models;
 
 namespace ShungoExpress.Web.Helper
 {
@@ -54,5 +54,7 @@ namespace ShungoExpress.Web.Helper
     Task DeleteUserAsync(User user);
 
     IEnumerable<SelectListItem> GetClients();
+
+    Task RefreshUser(User user);
   }
 }

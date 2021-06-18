@@ -1,16 +1,13 @@
-﻿
-
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace ShungoExpress.Web.Helper
+﻿namespace ShungoExpress.Web.Helper
 {
+  using Data.Entities;
+  using Microsoft.AspNetCore.Identity;
+  using Microsoft.AspNetCore.Mvc.Rendering;
+  using Microsoft.EntityFrameworkCore;
+  using Models;
   using System.Collections.Generic;
   using System.Linq;
   using System.Threading.Tasks;
-  using Models;
-  using Data.Entities;
-  using Microsoft.AspNetCore.Identity;
-  using Microsoft.EntityFrameworkCore;
 
   public class UserHelper : IUserHelper
   {
@@ -18,7 +15,9 @@ namespace ShungoExpress.Web.Helper
     private readonly SignInManager<User> _signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
-    public UserHelper(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
+    public UserHelper(UserManager<User> userManager,
+      SignInManager<User> signInManager,
+      RoleManager<IdentityRole> roleManager)
     {
       _userManager = userManager;
       _signInManager = signInManager;
@@ -139,7 +138,7 @@ namespace ShungoExpress.Web.Helper
           .OrderBy(u => u.LastName)
           .ToListAsync();
     }
-    
+
     public async Task<List<User>> GetAllClientsAsync()
     {
       return await _userManager.Users
@@ -160,7 +159,7 @@ namespace ShungoExpress.Web.Helper
 
     public IEnumerable<SelectListItem> GetClients()
     {
-      var list = _userManager.Users.Where(u=>u.Role.Equals("Client")).Select(c => new SelectListItem
+      var list = _userManager.Users.Where(u => u.Role.Equals("Client")).Select(c => new SelectListItem
       {
         Text = c.FirstName,
         Value = c.Id.ToString()
@@ -173,6 +172,11 @@ namespace ShungoExpress.Web.Helper
       });
 
       return list;
+    }
+
+    public async Task RefreshUser(User user)
+    {
+      await _signInManager.RefreshSignInAsync(user);
     }
   }
 }

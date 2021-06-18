@@ -32,5 +32,6 @@ namespace ShungoExpress.Web.Data.Entities
     public string FullName => $"{this.FirstName} {this.LastName}";
 
     public string Role { get; set; }
+
   }
 }

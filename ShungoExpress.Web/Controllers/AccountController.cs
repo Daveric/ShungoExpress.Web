@@ -2,6 +2,7 @@
 using ShungoExpress.Web.Helper;
 using ShungoExpress.Web.Models;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ShungoExpress.Web.Controllers
@@ -73,7 +74,7 @@ namespace ShungoExpress.Web.Controllers
     {
       if (ModelState.IsValid)
       {
-        var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
+        var user = await _userHelper.GetUserByEmailAsync(User.Identity?.Name);
         if (user != null)
         {
           user.FirstName = model.FirstName;
@@ -82,6 +83,9 @@ namespace ShungoExpress.Web.Controllers
           user.PhoneNumber = model.PhoneNumber;
 
           var identityResult = await _userHelper.UpdateUserAsync(user);
+          //updating the user name displaying on the page
+          User.Identity.AddUpdateClaim("FirstName", user.FirstName);
+          await _userHelper.RefreshUser(user);
           if (identityResult.Succeeded)
           {
             ViewBag.UserMessage = "User updated!";
