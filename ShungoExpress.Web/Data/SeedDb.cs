@@ -2,6 +2,7 @@
 using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Helper;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,9 +29,8 @@ namespace ShungoExpress.Web.Data
 
       if (!_context.Motorizeds.Any())
       {
-        AddMotorized("Motorizado 1");
-        AddMotorized("Motorizado 2");
-        AddMotorized("Motorizado 3");
+        AddMotorized("Juan", "Soto");
+        AddMotorized("Julio", "Arias");
         await _context.SaveChangesAsync();
       }
 
@@ -111,11 +111,12 @@ namespace ShungoExpress.Web.Data
       await _userHelper.CheckRoleAsync("Client");
     }
 
-    private void AddMotorized(string name)
+    private void AddMotorized(string name, string lastName)
     {
       _context.Motorizeds.Add(new Motorized()
       {
         FirstName = name,
+        LastName = lastName,
         Available = true
       });
     }

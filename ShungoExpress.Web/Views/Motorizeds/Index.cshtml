@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Motorizeds</h1>
+<h1>Motorizados</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
 </p>
 <table class="table">
     <thead class="thead-light">
@@ -15,6 +15,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
+          <th>
+            @Html.DisplayNameFor(model => model.DisplayName)
+          </th>
+          <th>
+            @Html.DisplayNameFor(model => model.Plate)
+          </th>
+          <th>
+            @Html.DisplayNameFor(model => model.IdNumber)
+          </th>
             <th>
                 @Html.DisplayNameFor(model => model.Available)
             </th>
@@ -27,16 +36,32 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.DisplayName)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Plate)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.IdNumber)
+          </td>
+          <td>
+            @if (item.Available)
+            {
+              @Html.Encode("Si")
+            }
+            else
+            {
+              @Html.Encode("No")
+            }
+          </td>
             <td>
-              @Html.DropDownListFor(modelItem => item.Available, new List<SelectListItem>()
+              <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">Editar</a>
+              <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-warning">Detalles</a>
+              @if (User.IsInRole("Admin"))
               {
-                new SelectListItem() { Text = "Yes", Value = "True" },
-                new SelectListItem() { Text = "No", Value = "False"}
-              }, "Select.....", new { @id = "flag", @class="form-control" })
-              @Html.ValidationMessageFor(modelItem => item.Available)
-            </td>
-            <td>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Eliminar</a>
+              }
             </td>
         </tr>
 }

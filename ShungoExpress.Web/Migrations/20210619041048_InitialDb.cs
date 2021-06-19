@@ -58,7 +58,7 @@ namespace ShungoExpress.Web.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Plate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdNumber = table.Column<int>(type: "int", nullable: false),
@@ -185,9 +185,10 @@ namespace ShungoExpress.Web.Migrations
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ClientAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Cost = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    MotorizedId = table.Column<int>(type: "int", nullable: true)
+                    MotorizedId = table.Column<int>(type: "int", nullable: true),
+                    Cost = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {

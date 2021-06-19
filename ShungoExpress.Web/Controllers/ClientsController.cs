@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShungoExpress.Web.Helper;
-using System.Threading.Tasks;
 using ShungoExpress.Web.Data.Entities;
+using ShungoExpress.Web.Helper;
+using ShungoExpress.Web.Models;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
 
 namespace ShungoExpress.Web.Controllers
 {
@@ -31,7 +33,24 @@ namespace ShungoExpress.Web.Controllers
       return View();
     }
 
-    // POST: Motorizeds/Create
+    // GET: Clients/Details/5
+    public async Task<IActionResult> Details(string id)
+    {
+      if (id == null)
+      {
+        return NotFound();
+      }
+
+      var client = await _clientHelper.GetUserByIdAsync(id);
+      if (client == null)
+      {
+        return NotFound();
+      }
+
+      return View(client);
+    }
+
+    // POST: Clients/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(User client)
@@ -44,6 +63,7 @@ namespace ShungoExpress.Web.Controllers
         await _clientHelper.AddUserToRoleAsync(client, "Client");
         return RedirectToAction(nameof(Index));
       }
+
       return View(client);
     }
 
@@ -63,6 +83,31 @@ namespace ShungoExpress.Web.Controllers
 
       await _clientHelper.RemoveUserFromRoleAsync(client, "Client");
       await _clientHelper.DeleteUserAsync(client);
+      return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Edit(string id)
+    {
+      if (string.IsNullOrEmpty(id))
+      {
+        return NotFound();
+      }
+
+      var client = await _clientHelper.GetUserByIdAsync(id);
+      if (client == null)
+      {
+        return NotFound();
+      }
+      return View(client);
+    }
+
+    public async Task<IActionResult> EditClient(User client)
+    {
+      if (ModelState.IsValid)
+      {
+        var identityResult = await _clientHelper.UpdateUserAsync(client);
+      }
+
       return RedirectToAction(nameof(Index));
     }
   }

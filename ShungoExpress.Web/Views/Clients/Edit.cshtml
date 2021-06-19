@@ -1,10 +1,10 @@
-﻿@model ShungoExpress.Web.Models.ChangeUserViewModel
+﻿@model ShungoExpress.Web.Data.Entities.User
 
 @{
-  ViewData["Title"] = "ChangeUser";
+  ViewData["Title"] = "EditClient";
 }
 
-<h2>Actualizar Usuario</h2>
+<h2>Actualizar Cliente</h2>
 
 <div class="row">
   <div class="col-md-4 offset-md-4">
@@ -30,14 +30,20 @@
       </div>
 
       <div class="form-group">
+        <label asp-for="AddressUrl">Link dirección</label>
+        <input asp-for="AddressUrl" class="form-control" />
+        <span asp-validation-for="AddressUrl" class="text-warning"></span>
+      </div>
+
+      <div class="form-group">
         <label asp-for="PhoneNumber">Celular</label>
         <input asp-for="PhoneNumber" class="form-control" />
         <span asp-validation-for="PhoneNumber" class="text-warning"></span>
       </div>
 
       <div class="form-group">
-        <input type="submit" value="Actualizar" class="btn btn-primary" />
-        <a asp-action="ChangePassword" class="btn btn-success">Cambiar Contraseña</a>
+        <a asp-action="EditClient" asp-route-id="@Model" class="btn btn-info">Actualizar</a>
+        <input type="submit" value="Actualizar" class="btn btn-primary"/>
       </div>
 
       <div class="text-success">@ViewBag.UserMessage</div>

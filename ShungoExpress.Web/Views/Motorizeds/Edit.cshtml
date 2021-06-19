@@ -4,30 +4,58 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Editar</h1>
 
-<h4>Motorized</h4>
+<h4>Motorizado</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Available" /> @Html.DisplayNameFor(model => model.Available)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-success">Back to List</a>
-            </div>
-        </form>
+      <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+          <label asp-for="FirstName" class="control-label"></label>
+          <input asp-for="FirstName" class="form-control" />
+          <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+          <label asp-for="LastName" class="control-label"></label>
+          <input asp-for="LastName" class="form-control" />
+          <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+          <label asp-for="DisplayName" class="control-label"></label>
+          <input asp-for="DisplayName" class="form-control" />
+          <span asp-validation-for="DisplayName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+          <label asp-for="Plate" class="control-label"></label>
+          <input asp-for="Plate" class="form-control" />
+          <span asp-validation-for="Plate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+          <label asp-for="IdNumber" class="control-label"></label>
+          <input asp-for="IdNumber" class="form-control" />
+          <span asp-validation-for="IdNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+          <label asp-for="Description" class="control-label"></label>
+          <input asp-for="Description" class="form-control" />
+          <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+          <label asp-for="Available" class="control-label"></label>
+          <select asp-for="Available" class="form-control">
+            <option>Select...</option>
+            <option value="True">Si</option>
+            <option value="False">No</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Guardar" class="btn btn-primary" />
+          <a asp-action="Index" class="btn btn-success">Atrás</a>
+        </div>
+      </form>
     </div>
 </div>
 

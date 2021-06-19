@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Helper;
 using ShungoExpress.Web.Models;
+using ShungoExpress.Web.Properties;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ShungoExpress.Web.Controllers
@@ -43,7 +45,7 @@ namespace ShungoExpress.Web.Controllers
         }
       }
 
-      ModelState.AddModelError(string.Empty, "Failed to login.");
+      ModelState.AddModelError(string.Empty, Resources.LoginFailed);
       return View(model);
     }
 
@@ -53,9 +55,52 @@ namespace ShungoExpress.Web.Controllers
       return RedirectToAction("Index", "Home");
     }
 
+    public IActionResult Register()
+    {
+      var model = new RegisterNewUserViewModel();
+
+      return this.View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Register(RegisterNewUserViewModel model)
+    {
+      if (ModelState.IsValid)
+      {
+        var user = await _userHelper.GetUserByEmailAsync(model.Username);
+        if (user == null)
+        {
+          user = new User
+          {
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            Email = model.Username,
+            UserName = model.Username,
+            Address = model.Address,
+            PhoneNumber = model.PhoneNumber
+          };
+
+          var result = await _userHelper.AddUserAsync(user, model.Password);
+          if (result != IdentityResult.Success)
+          {
+            this.ModelState.AddModelError(string.Empty, Resources.UserCannotBeCreated);
+            return this.View(model);
+          }
+
+          var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+          await _userHelper.ConfirmEmailAsync(user, myToken);
+          return this.View(model);
+        }
+
+        ModelState.AddModelError(string.Empty, Resources.UserRegistered);
+      }
+
+      return this.View(model);
+    }
+
     public async Task<IActionResult> ChangeUser()
     {
-      var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
+      var user = await _userHelper.GetUserByEmailAsync(User.Identity?.Name);
       var model = new ChangeUserViewModel();
 
       if (user != null)
@@ -88,7 +133,7 @@ namespace ShungoExpress.Web.Controllers
           await _userHelper.RefreshUser(user);
           if (identityResult.Succeeded)
           {
-            ViewBag.UserMessage = "User updated!";
+            ViewBag.UserMessage = Resources.UserUpdated;
           }
           else
           {
@@ -97,7 +142,7 @@ namespace ShungoExpress.Web.Controllers
         }
         else
         {
-          ModelState.AddModelError(string.Empty, "User no found.");
+          ModelState.AddModelError(string.Empty, Resources.UserNotFound);
         }
       }
 
@@ -114,7 +159,7 @@ namespace ShungoExpress.Web.Controllers
     {
       if (ModelState.IsValid)
       {
-        var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
+        var user = await _userHelper.GetUserByEmailAsync(User.Identity?.Name);
         if (user != null)
         {
           var result = await _userHelper.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
@@ -129,7 +174,7 @@ namespace ShungoExpress.Web.Controllers
         }
         else
         {
-          ModelState.AddModelError(string.Empty, "User no found.");
+          ModelState.AddModelError(string.Empty, Resources.UserNotFound);
         }
       }
 

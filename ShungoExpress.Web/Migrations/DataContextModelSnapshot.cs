@@ -176,7 +176,9 @@ namespace ShungoExpress.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Plate")
                         .HasColumnType("nvarchar(max)");
@@ -192,6 +194,9 @@ namespace ShungoExpress.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClientAddress")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(450)");

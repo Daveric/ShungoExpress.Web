@@ -5,14 +5,15 @@
   public class ChangePasswordViewModel
   {
     [Required]
-    [Display(Name = "Current password")]
+    [Display(Name = "Contraseña actual")]
     public string OldPassword { get; set; }
 
     [Required]
-    [Display(Name = "New password")]
+    [Display(Name = "Nueva contraseña")]
     public string NewPassword { get; set; }
 
     [Required]
+    [Display(Name = "Confirmar contraseña")]
     [Compare("NewPassword")]
     public string Confirm { get; set; }
   }

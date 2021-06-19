@@ -23,7 +23,7 @@
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-custom border-bottom box-shadow mb-3">
       <div class="container-fluid">
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-          <img src="~/images/logo.png" class="img-center" height="60" width="60" alt="Shungo-Express" />
+          <img src="~/images/logo.png" class="img-center" height="40" width="40" alt="Shungo-Express" />
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,7 @@
                   <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="ChangeUser">Editar Perfil</a></li>
                   @if (User.IsInRole("Admin"))
                   {
-                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="RegisterUser">Agregar Usuario</a></li>
+                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Register">Agregar Usuario</a></li>
                   }
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
