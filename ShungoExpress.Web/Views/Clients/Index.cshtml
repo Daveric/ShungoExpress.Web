@@ -25,12 +25,11 @@
                 @Html.DisplayNameFor(model => model.Address)
               </th>
               <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-              </th>
-              <th>
                 @Html.DisplayNameFor(model => model.AddressUrl)
               </th>
-              <th></th>
+              <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -47,9 +46,6 @@
                   @Html.DisplayFor(modelItem => item.Address)
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => item.PhoneNumber)
-                </td>
-                <td>
                   @{
                     var link = @item.AddressUrl;
                     if (link != null)
@@ -60,7 +56,10 @@
                       }
                     }
                   }
-                  <a href="@link" target="_blank">@item.AddressUrl</a>
+                  <a href="@link" target="_blank">Dirección</a>
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 <td>
                   <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">Editar</a>

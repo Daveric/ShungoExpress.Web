@@ -1,7 +1,7 @@
-﻿@model ShungoExpress.Web.Data.Entities.User
+﻿@model ShungoExpress.Web.Models.ClientViewModel
 
 @{
-  ViewData["Title"] = "EditClient";
+  ViewData["Title"] = "Edit";
 }
 
 <h2>Actualizar Cliente</h2>
@@ -42,7 +42,6 @@
       </div>
 
       <div class="form-group">
-        <a asp-action="EditClient" asp-route-id="@Model" class="btn btn-info">Actualizar</a>
         <input type="submit" value="Actualizar" class="btn btn-primary"/>
       </div>
 

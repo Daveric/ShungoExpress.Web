@@ -98,14 +98,31 @@ namespace ShungoExpress.Web.Controllers
       {
         return NotFound();
       }
-      return View(client);
+      var model = new ClientViewModel();
+      model.FirstName = client.FirstName;
+      model.LastName = client.LastName;
+      model.AddressUrl = client.AddressUrl;
+      model.PhoneNumber = client.PhoneNumber;
+      model.Address = client.Address;
+      return View(model);
     }
 
-    public async Task<IActionResult> EditClient(User client)
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(ClientViewModel model)
     {
       if (ModelState.IsValid)
       {
-        var identityResult = await _clientHelper.UpdateUserAsync(client);
+        var client = await _clientHelper.GetUserByNameAsync(model.FirstName);
+        if (client != null)
+        {
+          client.FirstName = model.FirstName;
+          client.LastName = model.LastName;
+          client.AddressUrl = model.AddressUrl;
+          client.PhoneNumber = model.PhoneNumber;
+          client.Address = model.Address;
+          var identityResult = await _clientHelper.UpdateUserAsync(client);
+        }
       }
 
       return RedirectToAction(nameof(Index));
