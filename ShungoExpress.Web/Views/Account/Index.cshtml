@@ -4,16 +4,15 @@
   ViewData["Title"] = "Index";
 }
 
-<h1>Clientes</h1>
-<p>
-  <a asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
-</p>
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Usuarios</h3>
+      </div>
       <div class="panel-body">
-        <table class="table table-hover table-responsive table-striped" id="ClientsTable">
-          <thead class="thead-light">
+        <table class="table table-hover table-responsive table-striped" id="UsersTable">
+          <thead>
             <tr>
               <th>
                 @Html.DisplayNameFor(model => model.FirstName)
@@ -22,14 +21,18 @@
                 @Html.DisplayNameFor(model => model.LastName)
               </th>
               <th>
-                @Html.DisplayNameFor(model => model.Address)
+                @Html.DisplayNameFor(model => model.Email)
               </th>
               <th>
-                @Html.DisplayNameFor(model => model.AddressUrl)
+                @Html.DisplayNameFor(model => model.Address)
               </th>
               <th>
                 @Html.DisplayNameFor(model => model.PhoneNumber)
               </th>
+              <th>
+                @Html.DisplayNameFor(model => model.EmailConfirmed)
+              </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -43,31 +46,19 @@
                   @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => item.Address)
+                  @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                  @{
-                    var link = @item.AddressUrl;
-                    if (link != null)
-                    {
-                      if (!link.StartsWith("https://"))
-                      {
-                        link = "https://" + link;
-                      }
-                    }
-                  }
-                  <a href="@link" target="_blank">Dirección</a>
+                  @Html.DisplayFor(modelItem => item.Address)
                 </td>
                 <td>
                   @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 <td>
-                  <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">Editar</a>
-                  <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-warning">Detalles</a>
-                  @if (User.IsInRole("Admin"))
-                  {
-                    <button data-id="@item.Id" class="btn btn-danger" data-toggle="modal" data-target="#deleteDialog">Eliminar</button>
-                  }
+                  @Html.DisplayFor(modelItem => item.EmailConfirmed)
+                </td>
+                <td>
+                  <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Eliminar</button>
                 </td>
               </tr>
             }
@@ -88,11 +79,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Quieres borrar este cliente?</p>
+        <p>Do you want to delete the user?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-danger" id="btnYesDelete">Eliminar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="btnYesDelete">Delete</button>
       </div>
     </div>
   </div>
@@ -102,17 +93,14 @@
   @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
   <script type="text/javascript">
     $(document).ready(function () {
-      $('#ClientsTable').DataTable();
-
+      $('#UsersTable').DataTable();
       // Delete item
-      var itemToDelete;
-
+      var item_to_delete;
       $('.deleteItem').click((e) => {
-        itemToDelete = e.currentTarget.dataset.id;
+        item_to_delete = e.currentTarget.dataset.id;
       });
-
       $("#btnYesDelete").click(function () {
-        window.location.href = '/Client/Delete/' + itemToDelete;
+        window.location.href = '/Account/DeleteUser/' + item_to_delete;
       });
     });
   </script>

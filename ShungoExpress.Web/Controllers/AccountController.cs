@@ -5,7 +5,9 @@ using ShungoExpress.Web.Helper;
 using ShungoExpress.Web.Models;
 using ShungoExpress.Web.Properties;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShungoExpress.Web.Controllers
 {
@@ -77,7 +79,8 @@ namespace ShungoExpress.Web.Controllers
             Email = model.Username,
             UserName = model.Username,
             Address = model.Address,
-            PhoneNumber = model.PhoneNumber
+            PhoneNumber = model.PhoneNumber,
+            Role = "Manager"
           };
 
           var result = await _userHelper.AddUserAsync(user, model.Password);
@@ -89,13 +92,14 @@ namespace ShungoExpress.Web.Controllers
 
           var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
           await _userHelper.ConfirmEmailAsync(user, myToken);
+          await _userHelper.AddUserToRoleAsync(user, user.Role);
           return this.View(model);
         }
 
         ModelState.AddModelError(string.Empty, Resources.UserRegistered);
       }
 
-      return this.View(model);
+      return RedirectToAction("Index", "Home");
     }
 
     public async Task<IActionResult> ChangeUser()
@@ -184,6 +188,33 @@ namespace ShungoExpress.Web.Controllers
     public IActionResult NotAuthorized()
     {
       return View();
+    }
+
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Index()
+    {
+      var users = await _userHelper.GetAllUsersAsync();
+
+      return this.View(users);
+    }
+
+
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteUser(string id)
+    {
+      if (string.IsNullOrEmpty(id))
+      {
+        return NotFound();
+      }
+
+      var user = await _userHelper.GetUserByIdAsync(id);
+      if (user == null)
+      {
+        return NotFound();
+      }
+
+      await _userHelper.DeleteUserAsync(user);
+      return RedirectToAction(nameof(Index));
     }
   }
 }

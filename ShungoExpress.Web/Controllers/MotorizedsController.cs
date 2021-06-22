@@ -14,9 +14,7 @@ namespace ShungoExpress.Web.Controllers
     {
       _motorizedRepository = motorizedRepository;
     }
-
-    //TODO: acoplar motorized entity con el controlador
-
+    
     // GET: Motorizeds
     public IActionResult Index()
     {

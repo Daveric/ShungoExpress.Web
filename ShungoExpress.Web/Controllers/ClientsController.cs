@@ -16,11 +16,7 @@ namespace ShungoExpress.Web.Controllers
     {
       _clientHelper = clientHelper;
     }
-
-    //borrar boton de delete para los usuarios
-    //TODO: agregar nickname 
-    //agregar campo de direccion en index
-
+    
     public async Task<IActionResult> Index()
     {
       var clients = await _clientHelper.GetAllClientsAsync();
@@ -67,25 +63,6 @@ namespace ShungoExpress.Web.Controllers
       return View(client);
     }
 
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> DeleteClient(string id)
-    {
-      if (string.IsNullOrEmpty(id))
-      {
-        return NotFound();
-      }
-
-      var client = await _clientHelper.GetUserByIdAsync(id);
-      if (client == null)
-      {
-        return NotFound();
-      }
-
-      await _clientHelper.RemoveUserFromRoleAsync(client, "Client");
-      await _clientHelper.DeleteUserAsync(client);
-      return RedirectToAction(nameof(Index));
-    }
-
     public async Task<IActionResult> Edit(string id)
     {
       if (string.IsNullOrEmpty(id))
@@ -98,22 +75,26 @@ namespace ShungoExpress.Web.Controllers
       {
         return NotFound();
       }
-      var model = new ClientViewModel();
-      model.FirstName = client.FirstName;
-      model.LastName = client.LastName;
-      model.AddressUrl = client.AddressUrl;
-      model.PhoneNumber = client.PhoneNumber;
-      model.Address = client.Address;
+
+      var model = new ClientViewModel
+      {
+        FirstName = client.FirstName,
+        LastName = client.LastName,
+        AddressUrl = client.AddressUrl,
+        PhoneNumber = client.PhoneNumber,
+        Address = client.Address,
+        UserName = client.FirstName + client.LastName
+      };
       return View(model);
     }
-
 
     [HttpPost]
     public async Task<IActionResult> Edit(ClientViewModel model)
     {
       if (ModelState.IsValid)
       {
-        var client = await _clientHelper.GetUserByNameAsync(model.FirstName);
+        var userName = model.FirstName + model.LastName;
+        var client = await _clientHelper.GetUserByNameAsync(userName);
         if (client != null)
         {
           client.FirstName = model.FirstName;
@@ -125,6 +106,23 @@ namespace ShungoExpress.Web.Controllers
         }
       }
 
+      return RedirectToAction(nameof(Index));
+    }
+
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(string id)
+    {
+      if (string.IsNullOrEmpty(id))
+      {
+        return NotFound();
+      }
+
+      var client = await _clientHelper.GetUserByIdAsync(id);
+      if (client == null)
+      {
+        return NotFound();
+      }
+      await _clientHelper.DeleteUserAsync(client);
       return RedirectToAction(nameof(Index));
     }
   }

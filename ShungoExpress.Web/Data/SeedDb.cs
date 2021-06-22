@@ -2,7 +2,6 @@
 using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Helper;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -40,18 +39,19 @@ namespace ShungoExpress.Web.Data
     private async Task AddClient(string name, string lastName)
     {
       const string role = "Client";
+      var userName = name + lastName;
       var client = new User()
       {
         FirstName = name,
         LastName = lastName,
-        UserName = name,
+        UserName = userName,
         Address = "Machala",
-        AddressUrl = "https://www.google.com.ec/maps/@-3.2714941,-79.947626,16z",
+        AddressUrl = "https://goo.gl/maps/xaMZZYNdCNFM3TBNA",
         Role = role,
-        PhoneNumber = "000000000"
+        PhoneNumber = "099961783"
       };
       IdentityResult result = null;
-      var user = await _userHelper.GetUserByNameAsync(name);
+      var user = await _userHelper.GetUserByNameAsync(userName);
       if (user == null)
       {
         result = await _userHelper.AddUserAsync(client);
@@ -89,7 +89,8 @@ namespace ShungoExpress.Web.Data
         Email = userName,
         UserName = userName,
         Address = "Machala",
-        PhoneNumber = "0992627258"
+        PhoneNumber = "0992627258",
+        Role = role
       };
 
       var result = await _userHelper.AddUserAsync(user, "Pwd1234");

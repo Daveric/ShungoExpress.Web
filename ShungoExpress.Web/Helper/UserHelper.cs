@@ -136,6 +136,7 @@
     {
       return await _userManager.Users
           .OrderBy(u => u.LastName)
+          .Where(u=> (!u.Role.Equals("Client")))
           .ToListAsync();
     }
 

@@ -7,5 +7,7 @@ namespace ShungoExpress.Web.Models
     [DataType(DataType.Url)]
     [Display(Name = "Link dirección")]
     public string AddressUrl { get; set; }
+
+    public string UserName { get; set; }
   }
 }
