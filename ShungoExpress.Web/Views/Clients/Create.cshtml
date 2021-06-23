@@ -1,4 +1,4 @@
-﻿@model ShungoExpress.Web.Data.Entities.User
+﻿@model ShungoExpress.Web.Models.ClientViewModel
 @{
   ViewData["Title"] = "Edit";
 }
@@ -9,6 +9,7 @@
   <div class="col-md-4">
     <form asp-action="Create">
       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      <input type="hidden" asp-for="RedirectUrl" />
 
       <div class="form-group">
         <label asp-for="FirstName">Nombre</label>

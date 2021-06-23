@@ -162,7 +162,7 @@
     {
       var list = _userManager.Users.Where(u => u.Role.Equals("Client")).Select(c => new SelectListItem
       {
-        Text = c.FirstName,
+        Text = c.FirstName + " " + c.LastName,
         Value = c.Id.ToString()
       }).OrderBy(l => l.Text).ToList();
 

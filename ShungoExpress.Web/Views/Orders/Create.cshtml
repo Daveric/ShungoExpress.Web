@@ -17,7 +17,7 @@
               <span asp-validation-for="ClientId" class="text-danger"></span>
               <br/>
               <label>o</label>
-              <a asp-controller="Clients" asp-action="Create" class="btn btn-outline-primary">Agregar Cliente</a>
+              <a asp-controller="Clients" asp-action="Create" asp-route-redirectUrl="Orders/Create" class="btn btn-outline-primary">Agregar Cliente</a>
             </div>
 
           <div class="form-group">
@@ -26,7 +26,7 @@
             <span asp-validation-for="MotorizedId" class="text-danger"></span>
             <br/>
             <label>o</label>
-            <a asp-controller="Motorizeds" asp-action="Create" class="btn btn-outline-primary">Agregar Motorizado</a>
+            <a asp-controller="Motorizeds" asp-action="Create" asp-route-redirectUrl="Orders/Create" class="btn btn-outline-primary">Agregar Motorizado</a>
           </div>
 
             <div class="form-group">

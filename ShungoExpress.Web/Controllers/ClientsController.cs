@@ -4,6 +4,7 @@ using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Helper;
 using ShungoExpress.Web.Models;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace ShungoExpress.Web.Controllers
 {
@@ -24,10 +25,6 @@ namespace ShungoExpress.Web.Controllers
       return View(clients);
     }
 
-    public IActionResult Create()
-    {
-      return View();
-    }
 
     // GET: Clients/Details/5
     public async Task<IActionResult> Details(string id)
@@ -46,21 +43,44 @@ namespace ShungoExpress.Web.Controllers
       return View(client);
     }
 
+    public IActionResult Create(string redirectUrl)
+    {
+      var model = new ClientViewModel
+      {
+        RedirectUrl = redirectUrl
+      };
+      return View(model);
+    }
+
     // POST: Clients/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(User client)
+    public async Task<IActionResult> Create(ClientViewModel model)
     {
       if (ModelState.IsValid)
       {
-        client.Role = "Client";
-        client.UserName = client.FirstName;
+        var client = new User
+        {
+          FirstName = model.FirstName,
+          LastName = model.LastName,
+          AddressUrl = model.AddressUrl,
+          Address = model.Address,
+          PhoneNumber = model.PhoneNumber,
+          Role = "Client",
+          UserName = model.FirstName + model.LastName
+        };
         await _clientHelper.AddUserAsync(client);
         await _clientHelper.AddUserToRoleAsync(client, "Client");
-        return RedirectToAction(nameof(Index));
+        if (!string.IsNullOrEmpty(model.RedirectUrl))
+        {
+          var redirect = model.RedirectUrl.Split('/');
+          return RedirectToAction(redirect[1], redirect[0]);
+        }
+        else
+          return RedirectToAction(nameof(Index));
       }
 
-      return View(client);
+      return View(model);
     }
 
     public async Task<IActionResult> Edit(string id)
@@ -89,12 +109,11 @@ namespace ShungoExpress.Web.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(ClientViewModel model)
+    public async Task<IActionResult> Edit(string id, ClientViewModel model)
     {
       if (ModelState.IsValid)
       {
-        var userName = model.FirstName + model.LastName;
-        var client = await _clientHelper.GetUserByNameAsync(userName);
+        var client = await _clientHelper.GetUserByIdAsync(id);
         if (client != null)
         {
           client.FirstName = model.FirstName;
@@ -102,6 +121,7 @@ namespace ShungoExpress.Web.Controllers
           client.AddressUrl = model.AddressUrl;
           client.PhoneNumber = model.PhoneNumber;
           client.Address = model.Address;
+          client.UserName = model.FirstName + model.LastName;
           var identityResult = await _clientHelper.UpdateUserAsync(client);
         }
       }

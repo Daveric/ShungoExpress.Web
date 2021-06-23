@@ -13,7 +13,7 @@
     public string LastName { get; set; }
 
     [Required]
-    [Display(Name = "Nombre de usuario")]
+    [Display(Name = "Email")]
     [DataType(DataType.EmailAddress)]
     public string Username { get; set; }
 

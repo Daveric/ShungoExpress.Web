@@ -9,5 +9,9 @@ namespace ShungoExpress.Web.Models
     public string AddressUrl { get; set; }
 
     public string UserName { get; set; }
+
+    public string Id { get; set; }
+
+    public string RedirectUrl { get; set; }
   }
 }

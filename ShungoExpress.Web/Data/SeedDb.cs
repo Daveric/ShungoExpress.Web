@@ -39,19 +39,18 @@ namespace ShungoExpress.Web.Data
     private async Task AddClient(string name, string lastName)
     {
       const string role = "Client";
-      var userName = name + lastName;
       var client = new User()
       {
         FirstName = name,
         LastName = lastName,
-        UserName = userName,
+        UserName = name + lastName,
         Address = "Machala",
         AddressUrl = "https://goo.gl/maps/xaMZZYNdCNFM3TBNA",
         Role = role,
         PhoneNumber = "099961783"
       };
       IdentityResult result = null;
-      var user = await _userHelper.GetUserByNameAsync(userName);
+      var user = await _userHelper.GetUserByNameAsync(client.UserName);
       if (user == null)
       {
         result = await _userHelper.AddUserAsync(client);
