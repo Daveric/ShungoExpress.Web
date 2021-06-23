@@ -62,7 +62,7 @@ namespace ShungoExpress.Web
 
       services.AddTransient<SeedDb>();
       services.AddScoped<IMotorizedRepository, MotorizedRepository>();
-      services.AddScoped<IGenericRepository<Order>, GenericRepository<Order>>();
+      services.AddScoped<IOrderRepository, OrderRepository>();
       services.AddScoped<IUserHelper, UserHelper>();
       services.AddScoped<IUserClaimsPrincipalFactory<User>, AppClaimsPrincipalFactory>();
 

@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Helper;
 using ShungoExpress.Web.Models;
 using ShungoExpress.Web.Properties;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ShungoExpress.Web.Controllers
 {

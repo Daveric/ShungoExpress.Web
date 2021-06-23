@@ -10,7 +10,7 @@ using ShungoExpress.Web.Data;
 namespace ShungoExpress.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210619041048_InitialDb")]
+    [Migration("20210623012047_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -196,9 +196,6 @@ namespace ShungoExpress.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClientAddress")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(450)");

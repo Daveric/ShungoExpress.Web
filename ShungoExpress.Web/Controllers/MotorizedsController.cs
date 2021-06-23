@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Data.Repositories;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShungoExpress.Web.Controllers
 {
+  [Authorize]
   public class MotorizedsController : Controller
   {
     private readonly IMotorizedRepository _motorizedRepository;
@@ -39,11 +41,11 @@ namespace ShungoExpress.Web.Controllers
     }
 
     // GET: Motorizeds/Create
-    public IActionResult Create()
+    public IActionResult Create(bool fromOrder)
     {
       return View();
     }
-
+    
     // POST: Motorizeds/Create
     [HttpPost]
     [ValidateAntiForgeryToken]

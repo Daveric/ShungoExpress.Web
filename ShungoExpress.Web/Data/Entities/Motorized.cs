@@ -16,7 +16,7 @@ namespace ShungoExpress.Web.Data.Entities
     [Required]
     public string LastName { set; get; }
 
-    [Display(Name = "Apodo")]
+    [Display(Name = "Motorizado")]
     [MaxLength(50, ErrorMessage = "The field {0} accept only {1} characters")]
     public string DisplayName { get; set; }
 

@@ -4,50 +4,69 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Orders</h1>
+<h1>Pedidos</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
 </p>
 <table class="table">
     <thead class="thead-light">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeliveryDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cost)
-            </th>
-            <th></th>
-        </tr>
+      <tr>
+        <th>
+          @Html.DisplayNameFor(model => model.OrderDate)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Client.Address)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Motorized.DisplayName)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.Cost)
+        </th>
+        <th>
+          @Html.DisplayNameFor(model => model.DeliveryDate)
+        </th>
+        <th></th>
+      </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeliveryDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cost)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
-}
+      <tr>
+        <td>
+          @Html.DisplayFor(modelItem => item.OrderDate)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Client.Address)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Motorized.DisplayName)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Cost)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.DeliveryDate)
+        </td>
+        <td>
+          <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info">Editar</a> |
+          <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-warning">Detalles</a> |
+          @if (!item.DeliveryDate.HasValue)
+          {
+            <a asp-action="Delivered" asp-route-id="@item.Id" class="btn btn-primary">Entregado</a> 
+          }
+          |
+          @if (User.IsInRole("Admin"))
+          {
+            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Eliminar</a>
+          }
+        </td>
+      </tr>}
     </tbody>
 </table>

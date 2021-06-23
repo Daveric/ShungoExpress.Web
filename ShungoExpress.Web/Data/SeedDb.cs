@@ -28,8 +28,8 @@ namespace ShungoExpress.Web.Data
 
       if (!_context.Motorizeds.Any())
       {
-        AddMotorized("Juan", "Soto");
-        AddMotorized("Julio", "Arias");
+        AddMotorized("Juan", "Soto", "Moto1");
+        AddMotorized("Julio", "Arias", "Moto2");
         await _context.SaveChangesAsync();
       }
 
@@ -112,12 +112,13 @@ namespace ShungoExpress.Web.Data
       await _userHelper.CheckRoleAsync("Client");
     }
 
-    private void AddMotorized(string name, string lastName)
+    private void AddMotorized(string name, string lastName, string nickName)
     {
       _context.Motorizeds.Add(new Motorized()
       {
         FirstName = name,
         LastName = lastName,
+        DisplayName = nickName,
         Available = true
       });
     }

@@ -195,9 +195,6 @@ namespace ShungoExpress.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClientAddress")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(450)");
 

@@ -24,13 +24,13 @@ namespace ShungoExpress.Web.Data.Repositories
     {
       var list = _context.Motorizeds.Select(m => new SelectListItem
       {
-        Text = m.FirstName,
+        Text = m.DisplayName,
         Value = m.Id.ToString()
       }).OrderBy(l => l.Text).ToList();
 
       list.Insert(0, new SelectListItem
       {
-        Text = "(Select a motorized...)",
+        Text = "(Selecciona un motorizado...)",
         Value = "0"
       });
 

@@ -19,18 +19,15 @@ namespace ShungoExpress.Web.Data.Entities
     [Required]
     [Display(Name = "Cliente")]
     public User Client { get; set; }
-    
-    [Display(Name = "Dirección")]
-    public string ClientAddress { get; set; }
+
+    [Required]
+    [Display(Name = "Motorizado")]
+    public Motorized Motorized { get; set; }
 
     [Required]
     [Display(Name = "Descripción")]
     [MaxLength(160, ErrorMessage = "The field {0} accept only {1} characters")]
     public string Description { get; set; }
-
-    [Required]
-    [Display(Name = "Motorizado")]
-    public Motorized Motorized { get; set; }
 
     [Required]
     [Display(Name = "Costo")]

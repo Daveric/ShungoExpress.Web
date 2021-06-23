@@ -136,7 +136,7 @@
     {
       return await _userManager.Users
           .OrderBy(u => u.LastName)
-          .Where(u=> (!u.Role.Equals("Client")))
+          .Where(u=> u.Role.Equals("Admin") || u.Role.Equals("Manager"))
           .ToListAsync();
     }
 
@@ -168,7 +168,7 @@
 
       list.Insert(0, new SelectListItem
       {
-        Text = "(Select a client...)",
+        Text = "(Selecciona un cliente...)",
         Value = "0"
       });
 

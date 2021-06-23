@@ -4,10 +4,10 @@ using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Helper;
 using ShungoExpress.Web.Models;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
 
 namespace ShungoExpress.Web.Controllers
 {
+  [Authorize]
   public class ClientsController : Controller
   {
     private readonly IUserHelper _clientHelper;
@@ -16,7 +16,7 @@ namespace ShungoExpress.Web.Controllers
     {
       _clientHelper = clientHelper;
     }
-    
+
     public async Task<IActionResult> Index()
     {
       var clients = await _clientHelper.GetAllClientsAsync();

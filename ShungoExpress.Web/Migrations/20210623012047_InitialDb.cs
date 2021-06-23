@@ -185,9 +185,8 @@ namespace ShungoExpress.Web.Migrations
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ClientAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
                     MotorizedId = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
                     Cost = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>

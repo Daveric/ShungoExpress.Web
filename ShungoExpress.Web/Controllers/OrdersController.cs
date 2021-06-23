@@ -6,16 +6,18 @@ using ShungoExpress.Web.Data.Repositories;
 using ShungoExpress.Web.Helper;
 using ShungoExpress.Web.Models;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShungoExpress.Web.Controllers
 {
+  [Authorize]
   public class OrdersController : Controller
   {
     private readonly IMotorizedRepository _motorizedRepository;
-    private readonly IGenericRepository<Order> _orderRepository;
+    private readonly IOrderRepository _orderRepository;
     private readonly IUserHelper _userHelper;
 
-    public OrdersController(IMotorizedRepository motorizedRepository, IGenericRepository<Order> orderRepository, IUserHelper userHelper)
+    public OrdersController(IMotorizedRepository motorizedRepository, IOrderRepository orderRepository, IUserHelper userHelper)
     {
       _motorizedRepository = motorizedRepository;
       _orderRepository = orderRepository;
@@ -25,8 +27,6 @@ namespace ShungoExpress.Web.Controllers
     //filtrar solo para administrador
     //TODO: filtrar pedidos por motorizados y por cliente
     //agregar boton the filtrado por dia,semana y mes
-    //agregar boton de confirmacion de llegada del pedido en pagina de detalles
-    //agregar campos de motorizado en index
     //agregar campos de nombre de cliente y direccion en detalles
     //agregar boton de contabilidad
     //letras mas grandes
@@ -36,18 +36,18 @@ namespace ShungoExpress.Web.Controllers
     // GET: Orders
     public IActionResult Index()
     {
-      return View(_orderRepository.GetAll());
+      return View(_orderRepository.GetOrders());
     }
 
     // GET: Orders/Details/5
-    public async Task<IActionResult> Details(int? id)
+    public IActionResult Details(int? id)
     {
       if (id == null)
       {
         return NotFound();
       }
 
-      var order = await _orderRepository.GetByIdAsync((int)id);
+      var order = _orderRepository.GetOrderByIdAsync((int)id);
       if (order == null)
       {
         return NotFound();
@@ -61,7 +61,6 @@ namespace ShungoExpress.Web.Controllers
     {
       var model = new OrderViewModel()
       {
-        OrderDate = DateTime.UtcNow,
         Clients = _userHelper.GetClients(),
         Motorizeds = _motorizedRepository.GetMotorizeds()
       };
@@ -76,11 +75,10 @@ namespace ShungoExpress.Web.Controllers
       if (ModelState.IsValid)
       {
         var motorized = await _motorizedRepository.FindAsync(model.MotorizedId);
-        var client = await _userHelper.GetUserByIdAsync(model.ClientName);
+        var client = await _userHelper.GetUserByIdAsync(model.ClientId);
         var order = new Order()
         {
-          OrderDate = model.OrderDate,
-          DeliveryDate = model.DeliveryDate,
+          OrderDate = DateTime.Now,
           Description = model.Description,
           Cost = model.Cost,
           Client = client,
@@ -93,33 +91,48 @@ namespace ShungoExpress.Web.Controllers
     }
 
     // GET: Orders/Edit/5
-    public async Task<IActionResult> Edit(int? id)
+    public IActionResult Edit(int? id)
     {
       if (id == null)
       {
         return NotFound();
       }
 
-      var order = await _orderRepository.GetByIdAsync((int)id);
+      var order = _orderRepository.GetOrderByIdAsync((int)id);
       if (order == null)
       {
         return NotFound();
       }
-      return View(order);
+
+      var model = new OrderViewModel
+      {
+        OrderDate = order.OrderDate,
+        ClientId = order.Client.Id,
+        Clients = _userHelper.GetClients(),
+        MotorizedId = order.Motorized.Id,
+        Motorizeds = _motorizedRepository.GetMotorizeds(),
+        Description = order.Description,
+        DeliveryDate = order.DeliveryDate,
+        Cost = order.Cost
+      };
+      return View(model);
     }
 
-    // POST: Orders/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, Order order)
+    public async Task<IActionResult> Edit(int id, OrderViewModel model)
     {
-      if (id != order.Id)
-      {
-        return NotFound();
-      }
-
       if (ModelState.IsValid)
       {
+        var order = _orderRepository.GetOrderByIdAsync(id);
+        var motorized = await _motorizedRepository.FindAsync(model.MotorizedId);
+        var client = await _userHelper.GetUserByIdAsync(model.ClientId);
+        order.OrderDate = model.OrderDate;
+        order.DeliveryDate = model.DeliveryDate;
+        order.Description = model.Description;
+        order.Cost = model.Cost;
+        order.Client = client;
+        order.Motorized = motorized;
         try
         {
           await _orderRepository.UpdateAsync(order);
@@ -137,11 +150,10 @@ namespace ShungoExpress.Web.Controllers
         }
         return RedirectToAction(nameof(Index));
       }
-      return View(order);
+      return View(model);
     }
 
-    // GET: Orders/Delete/5
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delivered(int? id)
     {
       if (id == null)
       {
@@ -149,6 +161,25 @@ namespace ShungoExpress.Web.Controllers
       }
 
       var order = await _orderRepository.GetByIdAsync((int)id);
+      if (order == null)
+      {
+        return NotFound();
+      }
+
+      order.DeliveryDate = DateTime.Now;
+      await _orderRepository.UpdateAsync(order);
+      return RedirectToAction("Index");
+    }
+
+    [Authorize(Roles = "Admin")]
+    public IActionResult Delete(int? id)
+    {
+      if (id == null)
+      {
+        return NotFound();
+      }
+
+      var order = _orderRepository.GetOrderByIdAsync((int)id);
       if (order == null)
       {
         return NotFound();

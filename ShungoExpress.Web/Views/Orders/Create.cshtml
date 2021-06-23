@@ -10,28 +10,25 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="OrderDate" class="control-label"></label>
-                <input asp-for="OrderDate" class="form-control" />
-                <span asp-validation-for="OrderDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <label asp-for="DeliveryDate" class="control-label"></label>
-              <input asp-for="DeliveryDate" class="form-control" />
-              <span asp-validation-for="DeliveryDate" class="text-danger"></span>
-            </div>
             
             <div class="form-group">
-              <label asp-for="ClientName" class="control-label"></label>
-              <select asp-for="ClientName" asp-items="Model.Clients" class="form-control"></select>
-              <span asp-validation-for="ClientName" class="text-danger"></span>
+              <label asp-for="ClientId" class="control-label"></label>
+              <select asp-for="ClientId" asp-items="Model.Clients" class="form-control"></select>
+              <span asp-validation-for="ClientId" class="text-danger"></span>
+              <br/>
+              <label>o</label>
+              <a asp-controller="Clients" asp-action="Create" class="btn btn-outline-primary">Agregar Cliente</a>
             </div>
 
-            <div class="form-group">
-              <label asp-for="MotorizedId" class="control-label"></label>
-              <select asp-for="MotorizedId" asp-items="Model.Motorizeds" class="form-control"></select>
-              <span asp-validation-for="MotorizedId" class="text-danger"></span>
-            </div>
+          <div class="form-group">
+            <label asp-for="MotorizedId" class="control-label"></label>
+            <select asp-for="MotorizedId" asp-items="Model.Motorizeds" class="form-control"></select>
+            <span asp-validation-for="MotorizedId" class="text-danger"></span>
+            <br/>
+            <label>o</label>
+            <a asp-controller="Motorizeds" asp-action="Create" class="btn btn-outline-primary">Agregar Motorizado</a>
+          </div>
+
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
@@ -43,8 +40,8 @@
                 <span asp-validation-for="Cost" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-success">Back to List</a>
+                <input type="submit" value="Crear" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-success"><i class="fa fa-chevron-left"></i>Atrás</a>
             </div>
         </form>
     </div>
@@ -52,7 +49,4 @@
 
 @section Scripts {
   @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-  <script type="text/javascript">
-    
-  </script>
 }
