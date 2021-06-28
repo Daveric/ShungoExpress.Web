@@ -4,7 +4,6 @@ using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Helper;
 using ShungoExpress.Web.Models;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.Extensions;
 
 namespace ShungoExpress.Web.Controllers
 {
@@ -142,7 +141,16 @@ namespace ShungoExpress.Web.Controllers
       {
         return NotFound();
       }
-      await _clientHelper.DeleteUserAsync(client);
+
+      try
+      {
+        await _clientHelper.DeleteUserAsync(client);
+      }
+      catch
+      {
+        //ignore
+      }
+
       return RedirectToAction(nameof(Index));
     }
   }

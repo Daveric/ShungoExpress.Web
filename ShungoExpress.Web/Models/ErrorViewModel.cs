@@ -1,5 +1,3 @@
-using System;
-
 namespace ShungoExpress.Web.Models
 {
   public class ErrorViewModel

@@ -20,7 +20,9 @@ namespace ShungoExpress.Web.Data
         .Property(p => p.Cost)
         .HasColumnType("decimal(10,2)");
 
-      var cascadeFKs = modelBuilder.Model.GetEntityTypes().SelectMany(t => t.GetForeignKeys())
+      var cascadeFKs = modelBuilder.Model
+        .GetEntityTypes()
+        .SelectMany(t => t.GetForeignKeys())
         .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
       foreach (var fk in cascadeFKs)
       {

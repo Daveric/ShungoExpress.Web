@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Data.Repositories;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ShungoExpress.Web.Controllers
 {
@@ -16,7 +16,7 @@ namespace ShungoExpress.Web.Controllers
     {
       _motorizedRepository = motorizedRepository;
     }
-    
+
     // GET: Motorizeds
     public IActionResult Index()
     {
@@ -45,7 +45,7 @@ namespace ShungoExpress.Web.Controllers
     {
       return View();
     }
-    
+
     // POST: Motorizeds/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -129,10 +129,18 @@ namespace ShungoExpress.Web.Controllers
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
+
       var motorized = await _motorizedRepository.GetByIdAsync(id);
-      await _motorizedRepository.DeleteAsync(motorized);
+      try
+      {
+        await _motorizedRepository.DeleteAsync(motorized);
+      }
+      catch
+      {
+        // ignored
+      }
+
       return RedirectToAction(nameof(Index));
     }
-
   }
 }
