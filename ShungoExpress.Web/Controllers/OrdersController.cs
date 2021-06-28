@@ -27,8 +27,6 @@ namespace ShungoExpress.Web.Controllers
     //filtrar solo para administrador
     //TODO: filtrar pedidos por motorizados y por cliente
     //agregar boton the filtrado por dia,semana y mes
-    //agregar campos de nombre de cliente y direccion en detalles
-    //agregar boton de contabilidad
     //letras mas grandes
     //agregar notas en pantalla home, para cargar siempre,
     //agregar boton de resumen de ventas del dia anterior en home
@@ -196,6 +194,12 @@ namespace ShungoExpress.Web.Controllers
       var order = await _orderRepository.GetByIdAsync(id);
       await _orderRepository.DeleteAsync(order);
       return RedirectToAction(nameof(Index));
+    }
+
+    [Authorize(Roles = "Admin")]
+    public IActionResult ShowChart()
+    {
+      return View();
     }
   }
 }
