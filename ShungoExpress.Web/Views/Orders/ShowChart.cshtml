@@ -1,1 +1,43 @@
-﻿
+﻿@{
+  ViewData["Title"] = "Chart";
+}
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card-header">
+      Resumen de Ventas 
+    </div>
+    <div class="card-body">
+      <canvas class="my-4 h-25" id="lineChart"></canvas>
+    </div>
+  </div>
+</div>
+<div class="form-group">
+  <a asp-action="Index"  class="btn btn-success"><i class="fa fa-chevron-left"></i> Atrás</a>
+</div>
+
+<script src="~/js/chart.min.js" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+  var orders = @Html.Raw(Json.Serialize(ViewBag.Orders));
+  var labels = @Html.Raw(Json.Serialize(ViewBag.Labels));
+
+  var chart = document.getElementById('lineChart').getContext('2d');
+  var myChart = new Chart(chart,
+    {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Ganancias en $',
+            data: orders,
+            fill: false,
+            borderColor: 'rgba(0,128,102)',
+            tension: 0.1
+          }]
+      },
+      options: {
+        scales: { yAxes: [{ ticks: { beginAtZero: true } }] }
+      }
+    });
+</script>

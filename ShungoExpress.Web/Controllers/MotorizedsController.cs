@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ShungoExpress.Web.Data.Entities;
 using ShungoExpress.Web.Data.Repositories;
 using System.Threading.Tasks;
+using ShungoExpress.Web.Models;
 
 namespace ShungoExpress.Web.Controllers
 {
@@ -41,22 +42,38 @@ namespace ShungoExpress.Web.Controllers
     }
 
     // GET: Motorizeds/Create
-    public IActionResult Create(bool fromOrder)
+    public IActionResult Create(string redirectUrl)
     {
-      return View();
+      var model = new MotorizedViewModel
+      {
+        RedirectUrl = redirectUrl
+      };
+      return View(model);
     }
 
     // POST: Motorizeds/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Motorized motorized)
+    public async Task<IActionResult> Create(MotorizedViewModel model)
     {
       if (ModelState.IsValid)
       {
+        var motorized = new Motorized
+        {
+          FirstName = model.FirstName,
+          LastName = model.LastName,
+          Plate = model.Plate,
+          Description = model.Description,
+          IdNumber = model.IdNumber,
+          Available = model.Available,
+          DisplayName = model.DisplayName
+        };
         await _motorizedRepository.CreateAsync(motorized);
-        return RedirectToAction(nameof(Index));
+        if (string.IsNullOrEmpty(model.RedirectUrl)) return RedirectToAction(nameof(Index));
+        var redirect = model.RedirectUrl.Split('/');
+        return RedirectToAction(redirect[1], redirect[0]);
       }
-      return View(motorized);
+      return View(model);
     }
 
     // GET: Motorizeds/Edit/5

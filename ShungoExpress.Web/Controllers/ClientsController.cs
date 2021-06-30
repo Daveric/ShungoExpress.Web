@@ -70,13 +70,9 @@ namespace ShungoExpress.Web.Controllers
         };
         await _clientHelper.AddUserAsync(client);
         await _clientHelper.AddUserToRoleAsync(client, "Client");
-        if (!string.IsNullOrEmpty(model.RedirectUrl))
-        {
-          var redirect = model.RedirectUrl.Split('/');
-          return RedirectToAction(redirect[1], redirect[0]);
-        }
-        else
-          return RedirectToAction(nameof(Index));
+        if (string.IsNullOrEmpty(model.RedirectUrl)) return RedirectToAction(nameof(Index));
+        var redirect = model.RedirectUrl.Split('/');
+        return RedirectToAction(redirect[1], redirect[0]);
       }
 
       return View(model);

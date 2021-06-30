@@ -60,8 +60,8 @@ namespace ShungoExpress.Web.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Plate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdNumber = table.Column<int>(type: "int", nullable: false),
+                    Plate = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: true),
+                    IdNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Available = table.Column<bool>(type: "bit", nullable: false)
                 },

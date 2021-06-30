@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShungoExpress.Web.Data.Entities;
@@ -24,7 +26,6 @@ namespace ShungoExpress.Web.Controllers
       _userHelper = userHelper;
     }
 
-    //filtrar solo para administrador
     //TODO: filtrar pedidos por motorizados y por cliente
     //agregar boton the filtrado por dia,semana y mes
     //letras mas grandes
@@ -197,9 +198,58 @@ namespace ShungoExpress.Web.Controllers
     }
 
     [Authorize(Roles = "Admin")]
-    public IActionResult ShowChart()
+    public IActionResult ShowChart(bool perWeek)
     {
+      var orders = new List<decimal>();
+      var labels = new List<string>();
+      string title;
+      var listOrder = _orderRepository.GetOrders().OrderBy(o => o.OrderDate).ToList();
+      if (perWeek)
+      {
+        title = "Ultima semana";
+        labels.Add("Lunes");
+        labels.Add("Martes");
+        labels.Add("Miércoles");
+        labels.Add("Jueves");
+        labels.Add("Viernes");
+        labels.Add("Sábado");
+        labels.Add("Domingo");
+        var currentDay = DateTime.Now.DayOfWeek;
+        var daysTillCurrentDay = currentDay - DayOfWeek.Monday;
+        var lastWeekStartDate = DateTime.Now.AddDays(-daysTillCurrentDay - 7);
+        for (var i = 0; i < 7; i++)
+        {
+          orders.Add(listOrder.Where(o=>o.OrderDate.Date == lastWeekStartDate.Date).Sum(o=>o.Cost));
+          lastWeekStartDate = lastWeekStartDate.AddDays(1);
+        }
+      }
+      else
+      {
+        title = "Año corriente";
+        labels.Add("Enero");
+        labels.Add("Febrero");
+        labels.Add("Marzo");
+        labels.Add("Abril");
+        labels.Add("Mayo");
+        labels.Add("Junio");
+        labels.Add("Julio");
+        labels.Add("Agosto");
+        labels.Add("Septiembre");
+        labels.Add("Octubre");
+        labels.Add("Noviembre");
+        labels.Add("Diciembre");
+        var currentYearOrders = listOrder.Where(o=>o.OrderDate.Year == DateTime.Now.Year).ToList();
+        for (var i = 1; i < 13; i++)
+        {
+          orders.Add(currentYearOrders.Where(o => o.OrderDate.Month == i).Sum(o=>o.Cost));
+        }
+      }
+
+
+      ViewBag.Labels = labels.ToList();
+      ViewBag.Orders = orders.ToList();
       return View();
     }
+
   }
 }

@@ -22,6 +22,7 @@ namespace ShungoExpress.Web.Data.Entities
     [Display(Name = "Link dirección")]
     public string AddressUrl { get; set; }
 
+    [DataType(DataType.PhoneNumber)]
     [Required]
     [Display(Name = "Celular")]
     public override string PhoneNumber { get => base.PhoneNumber; set => base.PhoneNumber = value; }

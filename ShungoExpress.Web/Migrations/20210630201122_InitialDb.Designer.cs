@@ -10,7 +10,7 @@ using ShungoExpress.Web.Data;
 namespace ShungoExpress.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210623012047_InitialDb")]
+    [Migration("20210630201122_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -174,8 +174,9 @@ namespace ShungoExpress.Web.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("IdNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("IdNumber")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -183,7 +184,8 @@ namespace ShungoExpress.Web.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Plate")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.HasKey("Id");
 

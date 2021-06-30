@@ -24,7 +24,7 @@
               <span asp-validation-for="ClientId" class="text-danger"></span>
               <br />
               <label>o</label>
-              <a asp-controller="Clients" asp-action="Create" class="btn btn-outline-primary">Agregar Cliente</a>
+              <a asp-controller="Clients" asp-action="Create" asp-route-redirectUrl="Orders/Edit" class="btn btn-outline-primary">Agregar Cliente</a>
             </div>
 
             <div class="form-group">
@@ -33,12 +33,12 @@
               <span asp-validation-for="MotorizedId" class="text-danger"></span>
               <br />
               <label>o</label>
-              <a asp-controller="Motorizeds" asp-action="Create" class="btn btn-outline-primary">Agregar Motorizado</a>
+              <a asp-controller="Motorizeds" asp-action="Create" asp-route-redirectUrl="Orders/Edit" class="btn btn-outline-primary">Agregar Motorizado</a>
             </div>
 
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">

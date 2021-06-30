@@ -1,70 +1,71 @@
-﻿@model ShungoExpress.Web.Data.Entities.Motorized
+﻿@model ShungoExpress.Web.Models.MotorizedViewModel
 
 @{
-    ViewData["Title"] = "Create";
+  ViewData["Title"] = "Create";
 }
 
 <h4>Motorizado</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-      <form asp-action="Create">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+  <div class="col-md-4">
+    <form asp-action="Create">
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      <input type="hidden" asp-for="RedirectUrl" />
 
-        <div class="form-group">
-          <label asp-for="FirstName" class="control-label"></label>
-          <input asp-for="FirstName" class="form-control" />
-          <span asp-validation-for="FirstName" class="text-danger"></span>
-        </div>
+      <div class="form-group">
+        <label asp-for="FirstName" class="control-label"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+      </div>
 
-        <div class="form-group">
-          <label asp-for="LastName" class="control-label"></label>
-          <input asp-for="LastName" class="form-control" />
-          <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
+      <div class="form-group">
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+      </div>
 
-        <div class="form-group">
-          <label asp-for="DisplayName" class="control-label"></label>
-          <input asp-for="DisplayName" class="form-control" />
-          <span asp-validation-for="DisplayName" class="text-danger"></span>
-        </div>
+      <div class="form-group">
+        <label asp-for="DisplayName" class="control-label"></label>
+        <input asp-for="DisplayName" class="form-control" />
+        <span asp-validation-for="DisplayName" class="text-danger"></span>
+      </div>
 
-        <div class="form-group">
-          <label asp-for="Plate" class="control-label"></label>
-          <input asp-for="Plate" class="form-control" />
-          <span asp-validation-for="Plate" class="text-danger"></span>
-        </div>
+      <div class="form-group">
+        <label asp-for="Plate" class="control-label"></label>
+        <input asp-for="Plate" class="form-control" />
+        <span asp-validation-for="Plate" class="text-danger"></span>
+      </div>
 
-        <div class="form-group">
-          <label asp-for="IdNumber" class="control-label"></label>
-          <input asp-for="IdNumber" class="form-control" />
-          <span asp-validation-for="IdNumber" class="text-danger"></span>
-        </div>
+      <div class="form-group">
+        <label asp-for="IdNumber" class="control-label"></label>
+        <input asp-for="IdNumber" class="form-control" />
+        <span asp-validation-for="IdNumber" class="text-danger"></span>
+      </div>
 
-        <div class="form-group">
-          <label asp-for="Description" class="control-label"></label>
-          <input asp-for="Description" class="form-control" />
-          <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-        
-        <div class="form-group">
-          <label asp-for="Available" class="control-label"></label>
-          <select asp-for="Available" class="form-control">
-            <option>Select...</option>
-            <option value="True">Si</option>
-            <option value="False">No</option>
-          </select>
-        </div>
-        
-        <div class="form-group">
-          <input type="submit" value="Crear" class="btn btn-primary" />
-          <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-success"><i class="fa fa-chevron-left"></i> Atrás</a>
-        </div>
+      <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+      </div>
 
-      </form>
-    </div>
+      <div class="form-group">
+        <label asp-for="Available" class="control-label"></label>
+        <select asp-for="Available" class="form-control">
+          <option>Select...</option>
+          <option value="True">Si</option>
+          <option value="False">No</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input type="submit" value="Crear" class="btn btn-primary" />
+        <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-success"><i class="fa fa-chevron-left"></i> Atrás</a>
+      </div>
+
+    </form>
+  </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+  @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

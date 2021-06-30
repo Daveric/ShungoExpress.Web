@@ -1,19 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShungoExpress.Web.Data.Entities
+namespace ShungoExpress.Web.Models
 {
-  public class Motorized: IEntity
+  public class MotorizedViewModel
   {
-    public int Id { get; set; }
-
     [Display(Name = "Nombre")]
-    [MaxLength(50, ErrorMessage = "The field {0} accept only {1} characters")]
-    [Required]
     public string FirstName { get; set; }
 
     [Display(Name = "Apellido")]
-    [MaxLength(50, ErrorMessage = "The field {0} accept only {1} characters")]
-    [Required]
     public string LastName { set; get; }
 
     [Display(Name = "Motorizado")]
@@ -34,5 +28,9 @@ namespace ShungoExpress.Web.Data.Entities
 
     [Display(Name = "Disponible?")]
     public bool Available { get; set; }
+
+    public string Id { get; set; }
+
+    public string RedirectUrl { get; set; }
   }
 }
