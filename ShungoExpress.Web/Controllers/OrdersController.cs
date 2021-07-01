@@ -202,11 +202,9 @@ namespace ShungoExpress.Web.Controllers
     {
       var orders = new List<decimal>();
       var labels = new List<string>();
-      string title;
       var listOrder = _orderRepository.GetOrders().OrderBy(o => o.OrderDate).ToList();
       if (perWeek)
       {
-        title = "Ultima semana";
         labels.Add("Lunes");
         labels.Add("Martes");
         labels.Add("Miércoles");
@@ -225,7 +223,6 @@ namespace ShungoExpress.Web.Controllers
       }
       else
       {
-        title = "Año corriente";
         labels.Add("Enero");
         labels.Add("Febrero");
         labels.Add("Marzo");
@@ -244,8 +241,7 @@ namespace ShungoExpress.Web.Controllers
           orders.Add(currentYearOrders.Where(o => o.OrderDate.Month == i).Sum(o=>o.Cost));
         }
       }
-
-
+      
       ViewBag.Labels = labels.ToList();
       ViewBag.Orders = orders.ToList();
       return View();
