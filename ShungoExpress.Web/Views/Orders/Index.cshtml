@@ -90,8 +90,8 @@
   @{
     if (User.IsInRole("Admin"))
     {
-      <a asp-action="ShowChart" asp-route-perWeek="@true" class="btn btn-primary"><i class="fa fa-bar-chart"></i> Semana</a>
-      <a asp-action="ShowChart" asp-route-perWeek="@false" class="btn btn-primary"><i class="fa fa-bar-chart"></i> Año</a>
+      <a asp-action="ShowChart" asp-route-perWeek="@true" class="btn btn-primary"><i class="fas fa-chart-line"></i> Semana</a>
+      <a asp-action="ShowChart" asp-route-perWeek="@false" class="btn btn-primary"><i class="fas fa-chart-line"></i> Año</a>
     }
   }
 </div>
